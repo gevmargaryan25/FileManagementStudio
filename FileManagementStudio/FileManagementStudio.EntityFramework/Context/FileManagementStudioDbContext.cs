@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileManagementStudio.Server
+namespace FileManagementStudio.EntityFramework.Context
 {
     public class FileManagementStudioDbContext : IdentityDbContext<User>
     {
-        public FileManagementStudioDbContext(DbContextOptions<FileManagementStudioDbContext> options) : base(options) 
+        public FileManagementStudioDbContext(DbContextOptions<FileManagementStudioDbContext> options) : base(options)
         { }
 
         //public DbSet<Entities.FileEntity> Files { get; set; }
@@ -18,4 +18,5 @@ namespace FileManagementStudio.Server
             base.OnModelCreating(builder);
         }
     }
+
 }

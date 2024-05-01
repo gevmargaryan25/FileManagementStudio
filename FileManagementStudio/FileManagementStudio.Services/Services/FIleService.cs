@@ -1,11 +1,6 @@
-﻿using FileManagementStudio.Server.Entities;
-using FileManagementStudio.Server.Repositories.Interfaces;
+﻿using FileManagementStudio.EntityFramework.Entities;
+using FileManagementStudio.EntityFramework.Repositories.Interfaces;
 using FileManagementStudio.Services.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileManagementStudio.Services.Services
 {

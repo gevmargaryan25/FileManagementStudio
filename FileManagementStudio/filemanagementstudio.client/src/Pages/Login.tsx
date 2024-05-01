@@ -37,7 +37,7 @@ function Login() {
             if (rememberme == true)
                 loginurl = "/login?useCookies=true";
             else
-                loginurl = "/login?useSessionCookies=true";
+                loginurl = "/login";
 
             fetch(loginurl, {
                 method: "POST",

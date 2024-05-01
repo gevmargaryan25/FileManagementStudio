@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
+using Microsoft.AspNetCore.Identity;
 
-namespace FileManagementStudio.Server.Entities
+namespace FileManagementStudio.EntityFramework.Entities
 {
     public class User : IdentityUser
     {

@@ -1,5 +1,7 @@
-using FileManagementStudio.Server;
-using FileManagementStudio.Server.Entities;
+using FileManagementStudio.EntityFramework.Context;
+using FileManagementStudio.EntityFramework.Entities;
+using FileManagementStudio.Services.Services;
+using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -8,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("FileManagementStudioDbContextConnection") ?? throw new InvalidOperationException();
 builder.Services.AddDbContext<FileManagementStudioDbContext>(options => options.UseSqlServer(connectionString));
-
 builder.Services.AddAuthentication();
+
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<FileManagementStudioDbContext>();
 // Add services to the container.
 
@@ -17,6 +19,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

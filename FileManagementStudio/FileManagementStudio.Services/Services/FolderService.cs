@@ -1,5 +1,5 @@
-﻿using FileManagementStudio.Server.Entities;
-using FileManagementStudio.Server.Repositories.Interfaces;
+﻿using FileManagementStudio.EntityFramework.Entities;
+using FileManagementStudio.EntityFramework.Repositories.Interfaces;
 using FileManagementStudio.Services.Services.Interfaces;
 
 namespace FileManagementStudio.Services.Services

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FileManagementStudio.Server\FileManagementStudio.Server.csproj" />
+    <ProjectReference Include="..\FileManagementStudio.EntityFramework\FileManagementStudio.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>
