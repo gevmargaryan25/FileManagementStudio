@@ -1,12 +1,12 @@
-﻿using FileManagementStudio.EntityFramework.Context;
-using FileManagementStudio.EntityFramework.Repositories.Interfaces;
+﻿using FileManagementStudio.DAL.Context;
+using FileManagementStudio.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagementStudio.EntityFramework.UnitOfWork
+namespace FileManagementStudio.DAL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

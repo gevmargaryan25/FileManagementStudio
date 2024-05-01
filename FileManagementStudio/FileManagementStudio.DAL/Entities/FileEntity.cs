@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagementStudio.EntityFramework.Entities
+namespace FileManagementStudio.DAL.Entities
 {
     public enum FileType
     {

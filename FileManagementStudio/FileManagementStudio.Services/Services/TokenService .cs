@@ -1,4 +1,4 @@
-﻿using FileManagementStudio.EntityFramework.Entities;
+﻿using FileManagementStudio.DAL.Entities;
 using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
 
-namespace FileManagementStudio.EntityFramework.Entities
+namespace FileManagementStudio.DAL.Entities
 {
     public class User : IdentityUser
     {

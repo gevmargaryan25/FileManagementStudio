@@ -9,7 +9,7 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "filemanagementstudio.client
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileManagementStudio.Services", "FileManagementStudio.Services\FileManagementStudio.Services.csproj", "{2852C97C-2B92-42D0-A654-D50C6F699D16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManagementStudio.EntityFramework", "FileManagementStudio.EntityFramework\FileManagementStudio.EntityFramework.csproj", "{ADE7CDC2-976B-4905-8140-26440006580F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileManagementStudio.DAL", "FileManagementStudio.DAL\FileManagementStudio.DAL.csproj", "{ADE7CDC2-976B-4905-8140-26440006580F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

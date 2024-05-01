@@ -1,4 +1,4 @@
-﻿using FileManagementStudio.EntityFramework.Entities;
+﻿using FileManagementStudio.DAL.Entities;
 
 namespace FileManagementStudio.Services.Services.Interfaces
 {

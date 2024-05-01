@@ -1,5 +1,5 @@
-using FileManagementStudio.EntityFramework.Context;
-using FileManagementStudio.EntityFramework.Entities;
+using FileManagementStudio.DAL.Context;
+using FileManagementStudio.DAL.Entities;
 using FileManagementStudio.Services.Services;
 using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;

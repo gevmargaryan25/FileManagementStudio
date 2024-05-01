@@ -1,6 +1,6 @@
-﻿using FileManagementStudio.EntityFramework.Context;
-using FileManagementStudio.EntityFramework.Exceptions;
-using FileManagementStudio.EntityFramework.Repositories.Interfaces;
+﻿using FileManagementStudio.DAL.Context;
+using FileManagementStudio.DAL.Exceptions;
+using FileManagementStudio.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagementStudio.EntityFramework.Repositories
+namespace FileManagementStudio.DAL.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {

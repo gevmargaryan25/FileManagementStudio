@@ -1,5 +1,5 @@
-﻿using FileManagementStudio.EntityFramework.Entities;
-using FileManagementStudio.EntityFramework.Repositories.Interfaces;
+﻿using FileManagementStudio.DAL.Entities;
+using FileManagementStudio.DAL.Repositories.Interfaces;
 using FileManagementStudio.Services.Services.Interfaces;
 
 namespace FileManagementStudio.Services.Services

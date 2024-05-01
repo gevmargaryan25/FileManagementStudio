@@ -1,4 +1,4 @@
-﻿using FileManagementStudio.EntityFramework.Entities;
+﻿using FileManagementStudio.DAL.Entities;
 using FileManagementStudio.Server.DTOs;
 using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;

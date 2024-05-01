@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagementStudio.EntityFramework.Exceptions
+namespace FileManagementStudio.DAL.Exceptions
 {
     public class EntityNotFoundException : Exception
     {

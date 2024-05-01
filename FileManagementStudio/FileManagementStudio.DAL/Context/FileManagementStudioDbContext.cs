@@ -1,8 +1,8 @@
-﻿using FileManagementStudio.EntityFramework.Entities;
+﻿using FileManagementStudio.DAL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileManagementStudio.EntityFramework.Context
+namespace FileManagementStudio.DAL.Context
 {
     public class FileManagementStudioDbContext : IdentityDbContext<User>
     {

@@ -1,13 +1,13 @@
-﻿using FileManagementStudio.EntityFramework.Context;
-using FileManagementStudio.EntityFramework.Entities;
-using FileManagementStudio.EntityFramework.Repositories.Interfaces;
+﻿using FileManagementStudio.DAL.Context;
+using FileManagementStudio.DAL.Entities;
+using FileManagementStudio.DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagementStudio.EntityFramework.Repositories
+namespace FileManagementStudio.DAL.Repositories
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
