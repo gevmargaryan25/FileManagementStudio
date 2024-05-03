@@ -2,8 +2,10 @@ using FileManagementStudio.EntityFramework.Context;
 using FileManagementStudio.EntityFramework.Entities;
 using FileManagementStudio.Services.Services;
 using FileManagementStudio.Services.Services.Interfaces;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,10 +14,19 @@ var connectionString = builder.Configuration.GetConnectionString("FileManagement
 builder.Services.AddDbContext<FileManagementStudioDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAuthentication();
 
+
 builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<FileManagementStudioDbContext>();
 // Add services to the container.
 
-builder.Services.AddControllers();
+
+//Configuration for fluentValidation
+builder.Services.AddControllers()
+            .AddFluentValidation(v =>
+            {
+                v.ImplicitlyValidateChildProperties = true;
+                v.ImplicitlyValidateRootCollectionElements = true;
+                v.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

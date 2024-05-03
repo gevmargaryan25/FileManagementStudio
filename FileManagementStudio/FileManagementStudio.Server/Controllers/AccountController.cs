@@ -24,7 +24,13 @@ namespace FileManagementStudio.Server.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+                return BadRequest(errors);
+            }
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (user == null) return Unauthorized("Invalid username!");
             var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
