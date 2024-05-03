@@ -4,6 +4,7 @@ using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace FileManagementStudio.Server.Controllers
 {
@@ -24,14 +25,8 @@ namespace FileManagementStudio.Server.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values
-                .SelectMany(v => v.Errors)
-                .Select(e => e.ErrorMessage)
-                .ToList();
-                return BadRequest(errors);
-            }
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+                return BadRequest(ModelState);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Username.ToLower());
             if (user == null) return Unauthorized("Invalid username!");
             var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
@@ -59,6 +54,14 @@ namespace FileManagementStudio.Server.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if (createdUser.Succeeded)
                 {
+                    return Ok(
+                            new NewUserDto
+                            {
+                                UserName = appUser.UserName,
+                                Email = appUser.Email,
+                                Token = _tokenService.CreateToken(appUser)
+                            }
+                        );
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if (roleResult.Succeeded)
                     {

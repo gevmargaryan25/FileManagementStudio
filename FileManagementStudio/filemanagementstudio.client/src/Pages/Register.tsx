@@ -39,7 +39,7 @@ function Register() {
             // clear error message
             setError("");
             // post data to the /register api
-            fetch("/register", {
+            fetch("api/account/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -47,6 +47,7 @@ function Register() {
                 body: JSON.stringify({
                     email: email,
                     password: password,
+                    username: "gev255"
                 }),
             })
                 //.then((response) => response.json())
