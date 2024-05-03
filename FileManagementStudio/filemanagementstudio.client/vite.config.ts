@@ -43,28 +43,12 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '^/weatherforecast': {
+            '/api': {
                 target: 'https://localhost:7160',
                 secure: false
-            },
-            '^/pingauth': {
-                target: 'https://localhost:7160',
-                secure: false
-            },
-            '^/register': {
-                target: 'https://localhost:7160',
-                secure: false
-            },
-            '^/login': {
-                target: 'https://localhost:7160',
-                secure: false
-            },
-            '^/logout': {
-                target: 'https://localhost:7160',
-                secure: false
-            },
+            }
         },
-        port: 5173,
+        port: 7161,
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
