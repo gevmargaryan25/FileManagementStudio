@@ -32,30 +32,30 @@ function Login() {
             // clear error message
             setError("");
             // post data to the /register api
-
+            console.log('Component mounted');
             var loginurl = "";
             if (rememberme == true)
                 loginurl = "/login?useCookies=true";
             else
-                loginurl = "/login";
-
+                loginurl = "/api/account/login";
             fetch(loginurl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email: email,
+                    username: email,
                     password: password,
                 }),
             })
 
                 .then((data) => {
                     // handle success or error from the server
-                    console.log(data);
+                    console.log("+++++++++++++++++++++++++++++++++++++++")
                     if (data.ok) {
+                        console.log("loacationcheck")
                         setError("Successful Login.");
-                        window.location.href = '/';
+                        window.location.href = '/comp';
                     }
                     else
                         setError("Error Logging In.");
