@@ -16,6 +16,7 @@ namespace FileManagementStudio.DAL.Entities
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(30)]
         public string Path { get; set; }
 
         public DateTimeOffset? CreationDate { get; set; }
