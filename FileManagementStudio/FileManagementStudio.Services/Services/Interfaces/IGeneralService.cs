@@ -1,21 +1,24 @@
-﻿using System;
+﻿using FileManagementStudio.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FileManagementStudio.Services.Services.Interfaces
 {
-    internal interface IGeneralService<TEntity> where TEntity : class
+    public interface IGeneralService<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetEntities();
-        Task<TEntity> GetEntity();
+        Task<IEnumerable<TEntity>> GetEntities(Expression<Func<Folder, bool>> filter,
+           Func<IQueryable<Folder>, IOrderedQueryable<Folder>> orderBy,
+           string includeProperties);
+        Task<TEntity> GetEntityById(object id);
         Task Add(TEntity entity);
         Task AddRange(IEnumerable<TEntity> entities);
-        Task Delete(TEntity entity);
-        Task Remove(TEntity entity);
-        Task Remove(object id);
+        void Remove(TEntity entity);
+        void Remove(object id);
         Task RemoveRange(IEnumerable<TEntity> entities);
-        Task Update(TEntity entity);
+        void Update(TEntity entity);
     }
 }

@@ -20,7 +20,7 @@ namespace FileManagementStudio.DAL.Repositories.Interfaces
 
         Task AddRange(IEnumerable<TEntity> entities);
 
-        public Task Remove(object id);
+        public void Remove(object id);
 
         public void Remove(TEntity entityToDelete);
 

@@ -60,6 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FileManagementStudio.DAL\FileManagementStudio.DAL.csproj" />
     <ProjectReference Include="..\FileManagementStudio.Services\FileManagementStudio.Services.csproj" />
   </ItemGroup>
 

@@ -8,14 +8,6 @@ using System.Threading.Tasks;
 
 namespace FileManagementStudio.DAL.Entities
 {
-    public enum FileType
-    {
-        pdf,
-        jpeg,
-        png,
-        mp4,
-        txt
-    }
     public class FileEntity
     {
         [Key]
@@ -26,9 +18,6 @@ namespace FileManagementStudio.DAL.Entities
 
         [Required, MaxLength(30)]
         public string Name { get; set; }
-
-        [Required]
-        public FileType FileType { get; set; }
 
         public double FileSize { get; set; }
 

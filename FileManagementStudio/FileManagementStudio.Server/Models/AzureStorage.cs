@@ -64,6 +64,7 @@ namespace FileManagementStudio.Server.Repository
             //await container.CreateAsync();
             try
             {
+                
                 // Get a reference to the blob just uploaded from the API in a container from configuration settings
                 BlobClient client = container.GetBlobClient(blob.FileName);
 
