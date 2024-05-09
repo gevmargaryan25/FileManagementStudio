@@ -17,7 +17,7 @@ namespace FileManagementStudio.DAL.Entities
         //[Required]
         //public string PasswordHash { get; set; }
 
-        //public ICollection<FileEntity> Files { get; set; }
+        public ICollection<FileEntity>? Files { get; set; }
 
         //public ICollection<Folder> Folders { get; set; }
     }

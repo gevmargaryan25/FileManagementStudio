@@ -1,44 +1,100 @@
-﻿using FileManagementStudio.DAL.Entities;
+﻿using AutoMapper;
+using FileManagementStudio.DAL.Entities;
+using FileManagementStudio.DAL.Exceptions;
 using FileManagementStudio.DAL.Repositories.Interfaces;
 using FileManagementStudio.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FileManagementStudio.Services.Services
 {
     public class FIleService : IFileService<FileEntity>
     {
-        private readonly IFileEntityRepository _repository;
-        public FIleService(IFileEntityRepository repository)
+        private readonly IFileEntityRepository _fileRepository;
+        //private readonly IFolderRepository _folderRepository;
+        private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+        public FIleService(IFileEntityRepository repository, IFolderRepository folderRepository, IMapper mapper, UserManager<User> userManager)
         {
-            _repository = repository;
+            _fileRepository = repository;
+            _mapper = mapper;
+            //_folderRepository= folderRepository;
+            _userManager = userManager;
         }
-        public Task Add(FileEntity entity)
+        public async Task AddAsync(IFormFile entity, string userId)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            FileEntity fileEntity = _mapper.Map<FileEntity>(entity);
+            User user = _userManager.Users
+                .Include(u => u.Files)
+                .FirstOrDefault(u => u.Id.Equals(userId));
+            if (user == null)
+            {
+                throw new NullReferenceException(nameof(user));
+            }
+            fileEntity.UserId = userId;
+            fileEntity.User = user;
+            try
+            { 
+                await _fileRepository.AddAsync(fileEntity);
+                await _fileRepository.SaveFromRepositoryAsync();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                throw;
+            }
+            catch(RepositoryException ex)
+            {
+                throw;
+            }
+        }
+
+        public Task AddRangeAsync(IEnumerable<IFormFile> files)
         {
             throw new NotImplementedException();
         }
 
-        public Task AddRange(IEnumerable<FileEntity> files)
+      /*  public Task Delete(FileEntity entity)
+        {
+            throw new NotImplementedException();
+        }*/
+
+        public async Task<IEnumerable<FileEntity>> GetEntitiesAsync()
+        {
+            try
+            {
+                return await _fileRepository.GetAsync();
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public Task<FileEntity> GetEntityAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(FileEntity entity)
+        public async Task RemoveAsync(string entityName, string userId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<FileEntity>> GetEntities()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<FileEntity> GetEntity()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Remove(FileEntity entity)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                FileEntity fileEntity = await _fileRepository.GetByFileNameAsync(entityName, userId);
+                _fileRepository.Remove(fileEntity);
+            }
+           catch(EntityNotFoundException ex)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
         }
 
         public Task Remove(object id)
@@ -51,7 +107,7 @@ namespace FileManagementStudio.Services.Services
             throw new NotImplementedException();
         }
 
-        public Task Update(FileEntity entity)
+        public Task Update(IFormFile file)
         {
             throw new NotImplementedException();
         }

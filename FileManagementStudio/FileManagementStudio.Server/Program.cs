@@ -31,6 +31,8 @@ builder.Services.AddControllers()
                 v.ImplicitlyValidateRootCollectionElements = true;
                 v.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             });
+//Configuration for automapping
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

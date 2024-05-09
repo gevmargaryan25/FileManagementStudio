@@ -9,7 +9,7 @@ namespace FileManagementStudio.DAL.Context
         public FileManagementStudioDbContext(DbContextOptions<FileManagementStudioDbContext> options) : base(options)
         { }
 
-        //public DbSet<Entities.FileEntity> Files { get; set; }
+        public DbSet<Entities.FileEntity> Files { get; set; }
         //public DbSet<Folder> Folders { get; set; }
         public DbSet<User> Users { get; set; }
 

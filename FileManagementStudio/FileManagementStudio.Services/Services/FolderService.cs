@@ -4,7 +4,7 @@ using FileManagementStudio.Services.Services.Interfaces;
 
 namespace FileManagementStudio.Services.Services
 {
-    public class FolderService : IFolderService<Folder>
+  /*  public class FolderService : IFolderService<Folder>
     {
         private readonly IFolderRepository _repository;
         public FolderService(IFolderRepository repository)
@@ -55,5 +55,5 @@ namespace FileManagementStudio.Services.Services
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

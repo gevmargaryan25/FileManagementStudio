@@ -22,7 +22,7 @@ namespace FileManagementStudio.DAL.Repositories
             this.dbSet = context.Set<TEntity>();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> Get(
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
@@ -58,25 +58,25 @@ namespace FileManagementStudio.DAL.Repositories
             }
         }
 
-        public virtual async Task<TEntity> GetByID(object id)
+        public virtual async Task<TEntity> GetByIDAsync(object id)
         {
             try { return await dbSet.FindAsync(id); }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new EntityNotFoundException("Impossible to find by given id",ex);
             }
         }
 
-        public virtual async Task Add(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             try { await dbSet.AddAsync(entity); }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new EntityNotFoundException("impossible to add an entity",ex);
             }
         }
 
-        public virtual async Task AddRange(IEnumerable<TEntity> entities)
+        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
         {
             try { await dbSet.AddRangeAsync(entities); }
             catch (Exception ex)
@@ -84,7 +84,7 @@ namespace FileManagementStudio.DAL.Repositories
                 throw;
             }
         }
-        public virtual async Task Remove(object id)
+        public virtual async Task RemoveAsync(object id)
         {
             try
             {
@@ -134,12 +134,12 @@ namespace FileManagementStudio.DAL.Repositories
                 throw;
             }
         }
-        public virtual async Task SaveFromRepository()
+        public virtual async Task SaveFromRepositoryAsync()
         {
             try { await context.SaveChangesAsync(); }
             catch (Exception ex)
             {
-                throw new RepositoryException(ex.Message);
+                throw new RepositoryException(ex.Message,ex);
             }
         }
     }

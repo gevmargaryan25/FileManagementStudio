@@ -9,5 +9,6 @@ namespace FileManagementStudio.DAL.Repositories.Interfaces
 {
     public interface IFileEntityRepository : IGenericRepository<FileEntity>
     {
+        public Task<FileEntity> GetByFileNameAsync(string fileName, string userId);
     }
 }

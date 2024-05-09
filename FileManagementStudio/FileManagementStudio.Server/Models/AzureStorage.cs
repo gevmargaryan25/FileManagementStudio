@@ -54,7 +54,7 @@ namespace FileManagementStudio.Server.Repository
         }
 
 
-        public async Task<BlobResponseDto> UploadAsync(IFormFile blob)
+        public async Task<BlobResponseDto> UploadAsync(IFormFile blob, string userName)
         {
             // Create new upload response object that we can return to the requesting method
             BlobResponseDto response = new();
@@ -64,8 +64,9 @@ namespace FileManagementStudio.Server.Repository
             //await container.CreateAsync();
             try
             {
+                string fileName = userName + blob.FileName;
                 // Get a reference to the blob just uploaded from the API in a container from configuration settings
-                BlobClient client = container.GetBlobClient(blob.FileName);
+                BlobClient client = container.GetBlobClient(fileName);
 
                 // Open a stream for the file we want to upload
                 await using (Stream? data = blob.OpenReadStream())
