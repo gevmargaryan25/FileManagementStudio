@@ -1,6 +1,7 @@
 ﻿using FileManagementStudio.DAL.Entities;
 using FileManagementStudio.DAL.Repositories.Interfaces;
 using FileManagementStudio.Services.Services.Interfaces;
+using System.Linq.Expressions;
 
 namespace FileManagementStudio.Services.Services
 {
@@ -11,49 +12,45 @@ namespace FileManagementStudio.Services.Services
         {
             _repository = repository;
         }
-        public Task Add(Folder entity)
+        public async Task Add(Folder entity)
         {
-            throw new NotImplementedException();
+            await _repository.Add(entity);
         }
 
-        public Task AddRange(IEnumerable<Folder> folders)
+        public async Task AddRange(IEnumerable<Folder> folders)
         {
-            throw new NotImplementedException();
+            await _repository.AddRange(folders);
         }
 
-        public Task Delete(Folder entity)
+        public Task<IEnumerable<Folder>> GetEntities(Expression<Func<Folder, bool>> filter = null,
+           Func<IQueryable<Folder>, IOrderedQueryable<Folder>> orderBy = null,
+           string includeProperties = "")
         {
-            throw new NotImplementedException();
+            return _repository.Get(filter, orderBy, includeProperties);
         }
 
-        public Task<IEnumerable<Folder>> GetEntities()
+        public Task<Folder> GetEntityById(object id)
         {
-            throw new NotImplementedException();
+            return _repository.GetByID(id);
         }
 
-        public Task<Folder> GetEntity()
+        public void Remove(Folder entity)
         {
-            throw new NotImplementedException();
+            _repository.Remove(entity);
+        }
+        public void Remove(object id)
+        {
+            _repository.Remove(id);
         }
 
-        public Task Remove(Folder entity)
+        public async Task RemoveRange(IEnumerable<Folder> folders)
         {
-            throw new NotImplementedException();
+             _repository.RemoveRange(folders);
         }
 
-        public Task Remove(object id)
+        public void Update(Folder entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveRange(IEnumerable<Folder> folders)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Folder entity)
-        {
-            throw new NotImplementedException();
+            _repository.Update(entity);
         }
     }
 }

@@ -60,19 +60,23 @@ namespace FileManagementStudio.DAL.Repositories
 
         public virtual async Task<TEntity> GetByID(object id)
         {
-            try { return await dbSet.FindAsync(id); }
-            catch (Exception ex)
+            var result = await dbSet.FindAsync(id);
+            if (result is null)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new EntityNotFoundException();
             }
+            return result;
         }
 
         public virtual async Task Add(TEntity entity)
         {
-            try { await dbSet.AddAsync(entity); }
+            try
+            {
+                await dbSet.AddAsync(entity); 
+            }
             catch (Exception ex)
             {
-                throw new EntityNotFoundException(ex.Message);
+                throw new Exception(ex.StackTrace);
             }
         }
 
@@ -84,7 +88,7 @@ namespace FileManagementStudio.DAL.Repositories
                 throw;
             }
         }
-        public virtual async Task Remove(object id)
+        public virtual async void Remove(object id)
         {
             try
             {
@@ -115,7 +119,10 @@ namespace FileManagementStudio.DAL.Repositories
 
         public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
-            try { dbSet.RemoveRange(entities); }
+            try
+            {
+                dbSet.RemoveRange(entities);
+            }
             catch (Exception ex)
             {
                 throw;

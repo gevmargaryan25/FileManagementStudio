@@ -1,57 +1,49 @@
 ﻿using FileManagementStudio.DAL.Entities;
 using FileManagementStudio.DAL.Repositories.Interfaces;
 using FileManagementStudio.Services.Services.Interfaces;
+using System.Linq.Expressions;
 
 namespace FileManagementStudio.Services.Services
 {
     public class FIleService : IFileService<FileEntity>
     {
-        private readonly IFileEntityRepository _repository;
-        public FIleService(IFileEntityRepository repository)
-        {
-            _repository = repository;
-        }
+       
         public Task Add(FileEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task AddRange(IEnumerable<FileEntity> files)
+        public Task AddRange(IEnumerable<FileEntity> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(FileEntity entity)
+        public Task<IEnumerable<FileEntity>> GetEntities(Expression<Func<Folder, bool>> filter, Func<IQueryable<Folder>, IOrderedQueryable<Folder>> orderBy, string includeProperties)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<FileEntity>> GetEntities()
+        public Task<FileEntity> GetEntityById(object id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<FileEntity> GetEntity()
+        public void Remove(FileEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task Remove(FileEntity entity)
+        public void Remove(object id)
         {
             throw new NotImplementedException();
         }
 
-        public Task Remove(object id)
+        public Task RemoveRange(IEnumerable<FileEntity> entities)
         {
             throw new NotImplementedException();
         }
 
-        public Task RemoveRange(IEnumerable<FileEntity> files)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(FileEntity entity)
+        public void Update(FileEntity entity)
         {
             throw new NotImplementedException();
         }
