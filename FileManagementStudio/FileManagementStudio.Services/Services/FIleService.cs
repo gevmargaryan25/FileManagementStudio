@@ -15,7 +15,7 @@ namespace FileManagementStudio.Services.Services
         //private readonly IFolderRepository _folderRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public FIleService(IFileEntityRepository repository, IFolderRepository folderRepository, IMapper mapper, UserManager<User> userManager)
+        public FIleService(IFileEntityRepository repository, IMapper mapper, UserManager<User> userManager)
         {
             _fileRepository = repository;
             _mapper = mapper;

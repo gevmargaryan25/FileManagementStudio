@@ -40,6 +40,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAzureStorage, AzureStorage>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IFileService<FileEntity>, FIleService>();
 
 var app = builder.Build();
 
