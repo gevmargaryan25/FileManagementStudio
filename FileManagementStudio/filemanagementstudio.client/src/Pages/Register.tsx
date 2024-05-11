@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 function Register() {
-    // state variables for email and passwords
+    // state variables for email, password, and username
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [username, setUsername] = useState(""); // Adding state for username
     const navigate = useNavigate();
 
     // state variable for error messages
@@ -16,20 +16,20 @@ function Register() {
         navigate("/login");
     }
 
-
     // handle change events for input fields
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         if (name === "email") setEmail(value);
         if (name === "password") setPassword(value);
         if (name === "confirmPassword") setConfirmPassword(value);
+        if (name === "username") setUsername(value); // Handle username change
     };
 
     // handle submit event for the form
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // validate email and passwords
-        if (!email || !password || !confirmPassword) {
+        // validate email, password, and username
+        if (!email || !password || !confirmPassword || !username) {
             setError("Please fill in all fields.");
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setError("Please enter a valid email address.");
@@ -47,18 +47,15 @@ function Register() {
                 body: JSON.stringify({
                     email: email,
                     password: password,
-                    username: "gev255"
+                    username: username // Send username in the request body
                 }),
             })
-                //.then((response) => response.json())
-                .then((data) => {
-                    // handle success or error from the server
-                    console.log(data);
-                    if (data.ok)
+                .then((response) => {
+                    if (response.ok) {
                         setError("Successful register.");
-                    else
+                    } else {
                         setError("Error registering.");
-
+                    }
                 })
                 .catch((error) => {
                     // handle network error
@@ -75,7 +72,6 @@ function Register() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email">Email:</label>
-                </div><div>
                     <input
                         type="email"
                         id="email"
@@ -85,7 +81,7 @@ function Register() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="password">Password:</label></div><div>
+                    <label htmlFor="password">Password:</label>
                     <input
                         type="password"
                         id="password"
@@ -95,7 +91,7 @@ function Register() {
                     />
                 </div>
                 <div>
-                    <label htmlFor="confirmPassword">Confirm Password:</label></div><div>
+                    <label htmlFor="confirmPassword">Confirm Password:</label>
                     <input
                         type="password"
                         id="confirmPassword"
@@ -105,8 +101,17 @@ function Register() {
                     />
                 </div>
                 <div>
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={username}
+                        onChange={handleChange}
+                    />
+                </div>
+                <div>
                     <button type="submit">Register</button>
-
                 </div>
                 <div>
                     <button onClick={handleLoginClick}>Go to Login</button>

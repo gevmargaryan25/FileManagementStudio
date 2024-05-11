@@ -35,7 +35,7 @@ function Login() {
             console.log('Component mounted');
             var loginurl = "";
             if (rememberme == true)
-                loginurl = "/login?useCookies=true";
+                loginurl = "/api/account/login?useCookies=true";
             else
                 loginurl = "/api/account/login";
             fetch(loginurl, {
@@ -51,11 +51,10 @@ function Login() {
 
                 .then((data) => {
                     // handle success or error from the server
-                    console.log("+++++++++++++++++++++++++++++++++++++++")
                     if (data.ok) {
                         console.log("loacationcheck")
                         setError("Successful Login.");
-                        window.location.href = '/comp';
+                        window.location.href = '/profile';
                     }
                     else
                         setError("Error Logging In.");
