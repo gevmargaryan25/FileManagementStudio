@@ -48,17 +48,20 @@ function Login() {
                     password: password,
                 }),
             })
-
                 .then((data) => {
                     // handle success or error from the server
                     if (data.ok) {
                         console.log("loacationcheck")
                         setError("Successful Login.");
                         window.location.href = '/profile';
+                        return data.json();
                     }
                     else
                         setError("Error Logging In.");
 
+                })
+                .then(response => {
+                    localStorage.setItem('token', response.token);
                 })
                 .catch((error) => {
                     // handle network error

@@ -30,10 +30,12 @@ namespace FileManagementStudio.Server.Controllers
         [HttpGet(nameof(Get))]
         public async Task<IActionResult> Get()
         {
-            //implement a conberter from fileentity to blobdto
-            List<BlobDto>? files = await _storage.ListAsync();
-
-            return StatusCode(StatusCodes.Status200OK, files);
+            var email = User.Claims.ToList()[0].Value.ToString();
+            var users = _userManager.Users.ToList();
+            var userId1 = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
+            var files = await _fileService.GetEntitiesAsync();
+            var list = files.Where(x => x.UserId == userId1).ToList();
+            return StatusCode(StatusCodes.Status200OK, list);
         }
 
         [HttpPost(nameof(Upload))]
@@ -95,8 +97,10 @@ namespace FileManagementStudio.Server.Controllers
         [HttpDelete("filename")]
         public async Task<IActionResult> Delete(string filename)
         {
-            string blobName = User.Identity.Name + filename;
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var email = User.Claims.ToList()[0].Value.ToString();
+            var users = _userManager.Users.ToList();
+            var userId = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
+            string blobName = string.Concat(email, filename);
             BlobResponseDto response = await _storage.DeleteAsync(blobName);
 
             if (response.Error == true)

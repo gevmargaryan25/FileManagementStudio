@@ -1,12 +1,36 @@
 import React from "react";
 
+
 const UserProfile: React.FC = () => {
     // Function to handle file upload
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             const file = event.target.files[0]; // Get the selected file
             console.log("Selected file:", file);
-            // Here you can perform further actions such as uploading the file to a server
+
+            const formData = new FormData();
+            formData.append("file", file); // Append the file to FormData
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch("/api/Storage/Upload", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    console.log("File uploaded successfully");
+                    // Handle success, if needed
+                } else {
+                    console.error("Failed to upload file:", response.statusText);
+                    // Handle error, if needed
+                }
+            } catch (error) {
+                console.error("Error uploading file:");
+                // Handle error, if needed
+            }
         }
     };
 

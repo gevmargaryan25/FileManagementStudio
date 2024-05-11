@@ -32,7 +32,6 @@ namespace FileManagementStudio.Services.Services
             var user = _userManager.Users
                 .Include(u => u.Files)
                 .FirstOrDefault(u => u.Id == userId);
-            //var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
             if (user == null)
             {
                 throw new NullReferenceException(nameof(user));
@@ -68,7 +67,7 @@ namespace FileManagementStudio.Services.Services
         {
             try
             {
-                return await _fileRepository.GetAsync();
+                return await _fileRepository.GetAsync(includeProperties: "User");
             }
             catch(Exception ex)
             {
