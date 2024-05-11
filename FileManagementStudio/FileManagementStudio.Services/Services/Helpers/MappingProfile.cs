@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FileManagementStudio.Services.Services.Helpers
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile() 
         {

@@ -4,6 +4,7 @@ using FileManagementStudio.DAL.Repositories.Interfaces;
 using FileManagementStudio.Server.DTOs;
 using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 namespace FileManagementStudio.Server.Controllers
@@ -17,11 +18,13 @@ namespace FileManagementStudio.Server.Controllers
     {
         private readonly IAzureStorage _storage;
         private readonly IFileService<FileEntity> _fileService;
+        private readonly UserManager<User> _userManager;
 
-        public StorageController(IAzureStorage storage, IFileService<FileEntity> fileService)
+        public StorageController(IAzureStorage storage, IFileService<FileEntity> fileService, UserManager<User> userManager)
         {
             _storage = storage;
             _fileService = fileService;
+            _userManager = userManager;
         }
 
         [HttpGet(nameof(Get))]
@@ -36,8 +39,12 @@ namespace FileManagementStudio.Server.Controllers
         [HttpPost(nameof(Upload))]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            string userName = User.Identity.Name;
-            BlobResponseDto? response = await _storage.UploadAsync(file, userName);
+            var email = User.Claims.ToList()[0].Value.ToString();
+            var users = _userManager.Users.ToList();
+            var userId1 = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
+
+            BlobResponseDto? response = await _storage.UploadAsync(file, email);
+            
 
             if (response.Error == true)
             {
@@ -45,14 +52,13 @@ namespace FileManagementStudio.Server.Controllers
             }
             else
             {
-                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (userId == null)
+                if (userId1 == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError, "The File upload was not succeeded");
                 }
                 try
                 {
-                    await _fileService.AddAsync(file, userId);
+                    await _fileService.AddAsync(file, userId1);
                 }
                 catch(ArgumentNullException ex)
                 {

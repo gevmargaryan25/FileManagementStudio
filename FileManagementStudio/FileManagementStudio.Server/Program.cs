@@ -1,9 +1,11 @@
+using AutoMapper;
 using FileManagementStudio.DAL.Context;
 using FileManagementStudio.DAL.Entities;
 using FileManagementStudio.DAL.Repositories;
 using FileManagementStudio.DAL.Repositories.Interfaces;
 using FileManagementStudio.Server.Repository;
 using FileManagementStudio.Services.Services;
+using FileManagementStudio.Services.Services.Helpers;
 using FileManagementStudio.Services.Services.Interfaces;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 //Configuration for fluentValidation
 //Configuration for automapping
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

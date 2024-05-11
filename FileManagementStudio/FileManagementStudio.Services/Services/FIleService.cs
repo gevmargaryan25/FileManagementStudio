@@ -29,9 +29,10 @@ namespace FileManagementStudio.Services.Services
                 throw new ArgumentNullException(nameof(entity));
             }
             FileEntity fileEntity = _mapper.Map<FileEntity>(entity);
-            User user = _userManager.Users
+            var user = _userManager.Users
                 .Include(u => u.Files)
-                .FirstOrDefault(u => u.Id.Equals(userId));
+                .FirstOrDefault(u => u.Id == userId);
+            //var user = _userManager.Users.FirstOrDefault(x => x.Id == userId);
             if (user == null)
             {
                 throw new NullReferenceException(nameof(user));
