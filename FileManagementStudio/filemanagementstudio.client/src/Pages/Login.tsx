@@ -61,7 +61,7 @@ function Login() {
 
                 })
                 .then(response => {
-                    localStorage.setItem('token', response.token);
+                    sessionStorage.setItem('token', response.token);
                 })
                 .catch((error) => {
                     // handle network error

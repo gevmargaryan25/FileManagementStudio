@@ -6,7 +6,7 @@ using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+
 namespace FileManagementStudio.Server.Controllers
 {
 
@@ -34,7 +34,15 @@ namespace FileManagementStudio.Server.Controllers
             var users = _userManager.Users.ToList();
             var userId1 = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
             var files = await _fileService.GetEntitiesAsync();
-            var list = files.Where(x => x.UserId == userId1).Select(x => x.Name).ToList();
+            var list = files.Where(x => x.UserId == userId1).Select(x =>
+            {
+                return new FileDTO()
+                {
+                    Name = x.Name,
+                    Type = x.FileType,
+                    Size = x.FileSize
+                };
+            }).ToList();
             return StatusCode(StatusCodes.Status200OK, list);
         }
 
@@ -94,7 +102,7 @@ namespace FileManagementStudio.Server.Controllers
             }
         }
 
-        [HttpDelete("filename")]
+        [HttpDelete("{filename}")]
         public async Task<IActionResult> Delete(string filename)
         {
             var email = User.Claims.ToList()[0].Value.ToString();

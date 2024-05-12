@@ -86,6 +86,7 @@ namespace FileManagementStudio.Services.Services
             {
                 FileEntity fileEntity = await _fileRepository.GetByFileNameAsync(entityName, userId);
                 _fileRepository.Remove(fileEntity);
+                await _fileRepository.SaveFromRepositoryAsync();
             }
            catch(EntityNotFoundException ex)
             {

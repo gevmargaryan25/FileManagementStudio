@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 
 
 const UserProfile: React.FC = () => {
 
-    const [fileNames, setFileNames] = useState<string[]>([]);
     const navigate = useNavigate();
+    const [files, setFiles] = useState([]);
 
     useEffect(() => {
-        fetchFileNames();
+        populateFilesTable();
     }, []);
 
-    const fetchFileNames = async () => {
-        const token = localStorage.getItem('token');
+    // Function to fetch file entities from the server and populate the table
+    const populateFilesTable = async () => {
+        const token = sessionStorage.getItem('token');
         try {
             const response = await fetch("/api/Storage/Get", {
                 method: "GET",
@@ -20,19 +21,20 @@ const UserProfile: React.FC = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
             if (response.ok) {
-                const data = await response.json();
-                setFileNames(data); // Update file names state
+                const filesData = await response.json();
+                setFiles(filesData);
             } else {
-                console.error("Failed to fetch file names:", response.statusText);
+                console.error("Failed to fetch files:", response.statusText);
                 // Handle error, if needed
             }
         } catch (error) {
-            console.error("Error fetching file names:", error);
+            console.error("Error fetching files:", error);
             // Handle error, if needed
         }
     };
+
+    
 
     // Function to handle file upload
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +44,7 @@ const UserProfile: React.FC = () => {
 
             const formData = new FormData();
             formData.append("file", file); // Append the file to FormData
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
             try {
                 const response = await fetch("/api/Storage/Upload", {
                     method: "POST",
@@ -54,6 +56,7 @@ const UserProfile: React.FC = () => {
 
                 if (response.ok) {
                     console.log("File uploaded successfully");
+                    populateFilesTable(); 
                     // Handle success, if needed
                 } else {
                     console.error("Failed to upload file:", response.statusText);
@@ -79,7 +82,7 @@ const UserProfile: React.FC = () => {
 
             if (response.ok) {
                 // Clear the token from localStorage
-                localStorage.removeItem('token');
+                sessionStorage.removeItem('token');
                 // Redirect to the login page
                 navigate("/login");
             } else {
@@ -92,16 +95,34 @@ const UserProfile: React.FC = () => {
         }
     };
 
+    const handleFileDelete = async (fileName: string) => {
+        const token = sessionStorage.getItem('token');
+        try {
+            const response = await fetch(`/api/Storage/${fileName}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                console.log("File deleted successfully");
+                populateFilesTable(); // Refresh the table after successful deletion
+                // Handle success, if needed
+            } else {
+                console.error("Failed to delete file:", response.statusText);
+                // Handle error, if needed
+            }
+        } catch (error) {
+            console.error("Error deleting file:", error);
+            // Handle error, if needed
+        }
+    };
+
     return (
         <div>
             <h2>User Profile Page</h2>
             <button onClick={handleLogout}>Logout</button>
-            <h3>Files:</h3>
-            <ul>
-                {fileNames.map((fileName, index) => (
-                    <li key={index}>{fileName}</li>
-                ))}
-            </ul>
+           
             <input
                 type="file"
                 id="fileInput"
@@ -120,6 +141,32 @@ const UserProfile: React.FC = () => {
             >
                 Upload File
             </button>
+
+            <h2>Files Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Extension</th>
+                        <th>Size (Bytes)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {files.map((file) => (
+                        <tr key={file.name}>
+                            <td>{file.name}</td>
+                            <td>{file.type}</td>
+                            <td>{file.size}</td>
+                            <td>
+                                <button onClick={() => handleFileDelete(file.name)}>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
