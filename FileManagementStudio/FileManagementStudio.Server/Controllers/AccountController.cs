@@ -39,6 +39,21 @@ namespace FileManagementStudio.Server.Controllers
                 }
             );
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                await _signinManager.SignOutAsync();
+                return StatusCode(200);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {

@@ -96,18 +96,6 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 //app.MapIdentityApi<User>();
 
-//app.MapPost("/logout", async (SignInManager<User> signInManager) =>
-//{
-//    await signInManager.SignOutAsync();
-//    return Results.Ok;
-//}).RequireAuthorization();
-
-app.MapPost("/logout", async (SignInManager<User> signInManager) =>
-{
-    await signInManager.SignOutAsync();
-    return Results.Ok();
-});
-
 app.MapGet("/pingauth", (ClaimsPrincipal user) =>
 {
     var email = user.FindFirstValue(ClaimValueTypes.Email);

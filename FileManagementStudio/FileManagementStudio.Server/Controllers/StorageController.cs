@@ -34,7 +34,7 @@ namespace FileManagementStudio.Server.Controllers
             var users = _userManager.Users.ToList();
             var userId1 = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
             var files = await _fileService.GetEntitiesAsync();
-            var list = files.Where(x => x.UserId == userId1).ToList();
+            var list = files.Where(x => x.UserId == userId1).Select(x => x.Name).ToList();
             return StatusCode(StatusCodes.Status200OK, list);
         }
 
