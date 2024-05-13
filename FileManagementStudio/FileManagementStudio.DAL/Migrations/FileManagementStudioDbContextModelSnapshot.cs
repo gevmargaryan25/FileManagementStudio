@@ -22,6 +22,21 @@ namespace FileManagementStudio.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("FileEntityUser", b =>
+                {
+                    b.Property<int>("FilesFileId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("FilesFileId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("FileEntityUser");
+                });
+
             modelBuilder.Entity("FileManagementStudio.DAL.Entities.FileEntity", b =>
                 {
                     b.Property<int>("FileId")
@@ -39,16 +54,9 @@ namespace FileManagementStudio.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FileId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Files");
                 });
@@ -251,15 +259,19 @@ namespace FileManagementStudio.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FileManagementStudio.DAL.Entities.FileEntity", b =>
+            modelBuilder.Entity("FileEntityUser", b =>
                 {
-                    b.HasOne("FileManagementStudio.DAL.Entities.User", "User")
-                        .WithMany("Files")
-                        .HasForeignKey("UserId")
+                    b.HasOne("FileManagementStudio.DAL.Entities.FileEntity", null)
+                        .WithMany()
+                        .HasForeignKey("FilesFileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("FileManagementStudio.DAL.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -311,11 +323,6 @@ namespace FileManagementStudio.DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FileManagementStudio.DAL.Entities.User", b =>
-                {
-                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

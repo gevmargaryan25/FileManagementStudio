@@ -6,6 +6,7 @@ using FileManagementStudio.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FileManagementStudio.Server.Controllers
 {
@@ -31,10 +32,8 @@ namespace FileManagementStudio.Server.Controllers
         public async Task<IActionResult> Get()
         {
             var email = User.Claims.ToList()[0].Value.ToString();
-            var users = _userManager.Users.ToList();
-            var userId1 = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
-            var files = await _fileService.GetEntitiesAsync();
-            var list = files.Where(x => x.UserId == userId1).Select(x =>
+            var files = await _fileService.GetFilesByUser(email);
+            var list = files.Select(x =>
             {
                 return new FileDTO()
                 {
@@ -50,25 +49,17 @@ namespace FileManagementStudio.Server.Controllers
         public async Task<IActionResult> Upload(IFormFile file)
         {
             var email = User.Claims.ToList()[0].Value.ToString();
-            var users = _userManager.Users.ToList();
-            var userId1 = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
-
             BlobResponseDto? response = await _storage.UploadAsync(file, email);
-            
 
-            if (response.Error == true)
+            if (response.Error)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, response.Status);
             }
             else
             {
-                if (userId1 == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "The File upload was not succeeded");
-                }
                 try
                 {
-                    await _fileService.AddAsync(file, userId1);
+                    await _fileService.AddAsync(file, email);
                 }
                 catch(ArgumentNullException ex)
                 {
@@ -91,7 +82,6 @@ namespace FileManagementStudio.Server.Controllers
         public async Task<IActionResult> Download(string filename)
         {
             BlobDto? file = await _storage.DownloadAsync(filename);
-
             if (file == null)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"File {filename} could not be downloaded.");
@@ -106,12 +96,9 @@ namespace FileManagementStudio.Server.Controllers
         public async Task<IActionResult> Delete(string filename)
         {
             var email = User.Claims.ToList()[0].Value.ToString();
-            var users = _userManager.Users.ToList();
-            var userId = users.FirstOrDefault(user => user.NormalizedEmail == email.ToUpper()).Id;
             string blobName = string.Concat(email, filename);
             BlobResponseDto response = await _storage.DeleteAsync(blobName);
-
-            if (response.Error == true)
+            if (response.Error)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, response.Status);
             }
@@ -119,7 +106,7 @@ namespace FileManagementStudio.Server.Controllers
             {
                 try
                 {
-                    await _fileService.RemoveAsync(filename, userId);
+                    await _fileService.RemoveAsync(filename, email);
                 }
                 catch(EntityNotFoundException ex)
                 {
@@ -131,6 +118,21 @@ namespace FileManagementStudio.Server.Controllers
                 }
                 return StatusCode(StatusCodes.Status200OK, response.Status);
             }
+        }
+
+        [HttpPost(nameof(Share))]
+        public async Task<IActionResult> Share([FromBody]ShareDto shareDto)
+        {
+            var originEmail = User.Claims.ToList()[0].Value.ToString();
+            var blob = await _storage.DownloadAsync(string.Concat(originEmail, shareDto.FileName));
+            blob.Name = shareDto.FileName;
+            var response = await _storage.UploadStreamAsync(blob, shareDto.Email);
+            if (response.Error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, response.Status);
+            }
+            await _fileService.ShareFile(originEmail, shareDto.Email, shareDto.FileName);
+            return StatusCode(StatusCodes.Status200OK, response.Status);
         }
     }
 }

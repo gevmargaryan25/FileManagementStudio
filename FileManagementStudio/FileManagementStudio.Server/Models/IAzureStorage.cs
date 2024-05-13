@@ -6,6 +6,7 @@ namespace FileManagementStudio.DAL.Repositories.Interfaces
     public interface IAzureStorage
     {
         Task<BlobResponseDto> UploadAsync(IFormFile file, string userName);
+        Task<BlobResponseDto> UploadStreamAsync(BlobDto blob, string userName);
 
         Task<BlobDto> DownloadAsync(string blobFilename);
 

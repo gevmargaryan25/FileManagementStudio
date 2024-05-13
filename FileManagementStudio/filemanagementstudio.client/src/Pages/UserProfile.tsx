@@ -6,6 +6,7 @@ const UserProfile: React.FC = () => {
 
     const navigate = useNavigate();
     const [files, setFiles] = useState([]);
+    const [email, setEmail] = useState('');
 
     useEffect(() => {
         populateFilesTable();
@@ -82,7 +83,7 @@ const UserProfile: React.FC = () => {
 
             if (response.ok) {
                 // Clear the token from localStorage
-                sessionStorage.removeItem('token');
+                sessionStorage.clear();
                 // Redirect to the login page
                 navigate("/login");
             } else {
@@ -118,9 +119,38 @@ const UserProfile: React.FC = () => {
         }
     };
 
+    const handleShare = async (fileName: string, email: string) => {
+        const token = sessionStorage.getItem('token');
+        try {
+            const response = await fetch(`/api/Storage/Share`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fileName: fileName,
+                    email: email
+                })
+            });
+            if (response.ok) {
+                console.log("File shared successfully");
+                // Optionally, you can update the UI or provide feedback to the user
+                // Handle success, if needed
+            } else {
+                console.error("Failed to share file:", response.statusText);
+                // Handle error, if needed
+            }
+        } catch (error) {
+            console.error("Error sharing file:", error);
+            // Handle error, if needed
+        }
+    };
+
     return (
         <div>
-            <h2>User Profile Page</h2>
+            <h2>Email: {sessionStorage.getItem('email') }</h2>
+            <h2>User Name: {sessionStorage.getItem('userName') }</h2>
             <button onClick={handleLogout}>Logout</button>
            
             <input
@@ -149,7 +179,8 @@ const UserProfile: React.FC = () => {
                         <th>Name</th>
                         <th>Extension</th>
                         <th>Size (Bytes)</th>
-                        <th>Action</th>
+                        <th>Action1</th>
+                        <th>Action2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -161,6 +192,17 @@ const UserProfile: React.FC = () => {
                             <td>
                                 <button onClick={() => handleFileDelete(file.name)}>
                                     Delete
+                                </button>
+                            </td>
+                            <td>
+                                <input
+                                    type="email"
+                                    placeholder="Enter email"
+                                    // Add validation logic if needed
+                                    onChange={(e) => setEmail(e.target.value)} // Assuming you have state for email
+                                />
+                                <button onClick={() => handleShare(file.name, email)}>
+                                    Share
                                 </button>
                             </td>
                         </tr>

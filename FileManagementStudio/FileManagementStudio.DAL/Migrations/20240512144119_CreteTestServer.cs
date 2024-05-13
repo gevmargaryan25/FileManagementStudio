@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FileManagementStudio.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class CretedDatabase : Migration
+    public partial class CreteTestServer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,21 @@ namespace FileManagementStudio.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    FileId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileSize = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.FileId);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,24 +172,26 @@ namespace FileManagementStudio.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Files",
+                name: "FileEntityUser",
                 columns: table => new
                 {
-                    FileId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FileSize = table.Column<double>(type: "float", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    FilesFileId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Files", x => x.FileId);
+                    table.PrimaryKey("PK_FileEntityUser", x => new { x.FilesFileId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_Files_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_FileEntityUser_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FileEntityUser_Files_FilesFileId",
+                        column: x => x.FilesFileId,
+                        principalTable: "Files",
+                        principalColumn: "FileId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -218,9 +235,9 @@ namespace FileManagementStudio.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Files_UserId",
-                table: "Files",
-                column: "UserId");
+                name: "IX_FileEntityUser_UsersId",
+                table: "FileEntityUser",
+                column: "UsersId");
         }
 
         /// <inheritdoc />
@@ -242,13 +259,16 @@ namespace FileManagementStudio.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Files");
+                name: "FileEntityUser");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Files");
         }
     }
 }

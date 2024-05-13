@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FileManagementStudio.DAL.Entities
 {
-  
+
     public class FileEntity
     {
         [Key]
@@ -16,7 +10,7 @@ namespace FileManagementStudio.DAL.Entities
 
         //public string Path { get; set; }
 
-        [Required, MaxLength(30)]
+        [Required]
         public string Name { get; set; }
 
         [Required]
@@ -24,9 +18,7 @@ namespace FileManagementStudio.DAL.Entities
 
         public double FileSize { get; set; }
 
-        [ForeignKey("UserId")]
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public List<User> Users { get; set; }
 
       /*  [ForeignKey("FolderId")]
         public int? FolderId { get; set; }
