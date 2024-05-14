@@ -82,7 +82,7 @@ namespace FileManagementStudio.Server.Repository
                     string contentType = content.Value.Details.ContentType;
 
                     // Create new BlobDto with blob data from variables
-                    return new BlobDto { Content = blobContent, Name = name, ContentType = contentType };
+                    return new BlobDto { Content = blobContent, Name = name, ContentType = contentType, Uri = file.Uri.AbsoluteUri };
                 }
             }
             catch (RequestFailedException ex)

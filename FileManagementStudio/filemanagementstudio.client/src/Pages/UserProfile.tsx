@@ -119,6 +119,31 @@ const UserProfile: React.FC = () => {
         }
     };
 
+    const handleFileDownload = async (fileName: string) => {
+        const token = sessionStorage.getItem('token');
+        try {
+            const response = await fetch(`/api/Storage/${fileName}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok)
+            {
+                console.log("File downloaded successfully");
+                const filesData = await response.json();
+                window.open(filesData.uri, "_blank");
+            } else
+            {
+                
+                // Handle error, if needed
+            }
+        } catch (error) {
+            console.error("Error deleting file:", error);
+            // Handle error, if needed
+        }
+    };
+
     const handleShare = async (fileName: string, email: string) => {
         const token = sessionStorage.getItem('token');
         try {
@@ -145,6 +170,12 @@ const UserProfile: React.FC = () => {
             console.error("Error sharing file:", error);
             // Handle error, if needed
         }
+    };
+
+    const handleItemClick = (fileName: string) => {
+        // Perform actions when a file is clicked, for example:
+        console.log(`File ${fileName} clicked.`);
+        // You can navigate to a specific page or perform any other action here
     };
 
     return (
@@ -181,12 +212,17 @@ const UserProfile: React.FC = () => {
                         <th>Size (Bytes)</th>
                         <th>Action1</th>
                         <th>Action2</th>
+                        <th>Action3</th>
                     </tr>
                 </thead>
                 <tbody>
                     {files.map((file) => (
                         <tr key={file.name}>
-                            <td>{file.name}</td>
+                            <td>
+                                <a href="#" onClick={() => handleItemClick(file.name)}>
+                                    {file.name}
+                                </a>
+                            </td>
                             <td>{file.type}</td>
                             <td>{file.size}</td>
                             <td>
@@ -203,6 +239,11 @@ const UserProfile: React.FC = () => {
                                 />
                                 <button onClick={() => handleShare(file.name, email)}>
                                     Share
+                                </button>
+                            </td>
+                            <td>
+                                <button onClick={() => handleFileDownload(file.name)}>
+                                    Download
                                 </button>
                             </td>
                         </tr>

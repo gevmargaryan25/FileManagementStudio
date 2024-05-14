@@ -81,6 +81,8 @@ namespace FileManagementStudio.Server.Controllers
         [HttpGet("{filename}")]
         public async Task<IActionResult> Download(string filename)
         {
+            var email = User.Claims.ToList()[0].Value.ToString();
+            filename = string.Concat(email, filename);
             BlobDto? file = await _storage.DownloadAsync(filename);
             if (file == null)
             {
@@ -88,7 +90,7 @@ namespace FileManagementStudio.Server.Controllers
             }
             else
             {
-                return File(file.Content, file.ContentType, file.Name);
+                return StatusCode(StatusCodes.Status200OK, file);
             }
         }
 
